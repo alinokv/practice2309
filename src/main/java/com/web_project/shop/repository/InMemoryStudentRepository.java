@@ -50,7 +50,7 @@ public class InMemoryStudentRepository {
 
     public List<StudentModel> findByCourse(int course) {
         return students.stream()
-                .filter(student -> student.getCourse() == course && !student.isDeleted()) // Поиск по курсу и не удалённые
+                .filter(student -> student.getCourse() == course && !student.isDeleted())
                 .collect(Collectors.toList());
     }
 
@@ -59,7 +59,7 @@ public class InMemoryStudentRepository {
                 .filter(student -> (student.getName().equalsIgnoreCase(param)
                         || student.getFirstName().equalsIgnoreCase(param)
                         || (student.getLastName() != null && student.getLastName().equalsIgnoreCase(param)))
-                        && !student.isDeleted()) // Поиск по параметрам, исключая удалённых
+                        && !student.isDeleted())
                 .collect(Collectors.toList());
     }
 }

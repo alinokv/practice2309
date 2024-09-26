@@ -5,7 +5,6 @@ import com.web_project.shop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class ProductSeviceImpl implements ProductService {
     private final ProductRepository productRepository;
@@ -17,6 +16,13 @@ public class ProductSeviceImpl implements ProductService {
     @Override
     public List<ProductModel> findAllProducts(){
         return productRepository.findAllProducts();
+    }
+
+    @Override
+    public List<ProductModel> findProductsPaginated(int page, int size) {
+        int fromIndex = (page - 1) * size;
+        int toIndex = Math.min(fromIndex + size, productRepository.countProducts());
+        return productRepository.findAllProducts().subList(fromIndex, toIndex);
     }
 
     @Override
@@ -39,4 +45,8 @@ public class ProductSeviceImpl implements ProductService {
         productRepository.deleteProduct(id);
     }
 
+    @Override
+    public int countProducts() {
+        return productRepository.countProducts();
+    }
 }

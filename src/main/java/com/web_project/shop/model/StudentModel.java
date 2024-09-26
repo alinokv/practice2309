@@ -10,8 +10,8 @@ public class StudentModel {
     private String LastName;
     @Nullable
     private String CorpEmail;
-    private boolean isDeleted; // Логическое удаление
-    private int Course; // Новое поле для курса
+    private boolean isDeleted;
+    private int Course;
 
     public StudentModel(int id, String name, String firstName, @Nullable String lastName, @Nullable String corpEmail, int course) {
         Id = id;
@@ -19,7 +19,7 @@ public class StudentModel {
         FirstName = firstName;
         LastName = lastName;
         CorpEmail = corpEmail;
-        isDeleted = false; // Изначально не удалён
+        isDeleted = false;
         Course = course;
     }
 

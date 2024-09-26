@@ -40,4 +40,7 @@ public class ProductRepository {
         return prducts.stream().filter(product -> product.getId() == id).findFirst().orElse(null);
     }
 
+    public int countProducts() {
+        return prducts.size();
+    }
 }

@@ -36,7 +36,7 @@ public class StudentController {
                                 @RequestParam String firstName,
                                 @RequestParam String lastName,
                                 @RequestParam String corpEmail,
-                                @RequestParam int Course) { // Добавлен параметр курса
+                                @RequestParam int Course) {
         StudentModel updateStudent = new StudentModel(id, name, firstName, lastName, corpEmail, Course);
         studentService.updateStudent(updateStudent);
         return "redirect:/students/all";
