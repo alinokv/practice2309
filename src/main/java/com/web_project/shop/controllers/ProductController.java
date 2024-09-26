@@ -14,6 +14,15 @@ public class ProductController {
     @Autowired
     public ProductService productService;
 
+    @PostMapping("/delete-multiple")
+    public String deleteMultipleProducts(@RequestParam(required = false) List<Integer> productIds) {
+        if (productIds != null && !productIds.isEmpty()) {
+            productService.deleteMultipleProducts(productIds);
+        }
+        return "redirect:/products/all";
+    }
+
+
     // Пагинация и получение всех продуктов
     @GetMapping("/all")
     public String getAllProducts(Model model,

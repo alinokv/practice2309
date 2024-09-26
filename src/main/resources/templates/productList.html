@@ -13,7 +13,6 @@
 </form>
 
 <h2>Все продукты: </h2>
-<form action="/products/delete-multiple" method="post">
   <ul>
     <th:block th:each="product : ${products}">
       <li>
@@ -28,8 +27,29 @@
       </li>
     </th:block>
   </ul>
+
+<form action="/products/delete-multiple" method="post">
+  <table>
+    <thead>
+    <tr>
+      <th>Выбрать</th>
+      <th>Имя</th>
+      <th>Цена</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+      <td>
+        <input type="checkbox" name="productIds" th:value="${product.id}" />
+      </td>
+      <td th:text="${product.name}"></td>
+      <td th:text="${product.price}"></td>
+    </tr>
+    </tbody>
+  </table>
   <button type="submit">Удалить выбранные</button>
 </form>
+
 
 <div>
   <span>Страница: </span>

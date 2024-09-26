@@ -12,4 +12,5 @@ public interface ProductService {
     ProductModel updateProduct(ProductModel product);
     void deleteProduct(int id);
     int countProducts();  // Для получения общего числа продуктов
+    void deleteMultipleProducts(List<Integer> ids);
 }

@@ -49,4 +49,8 @@ public class ProductSeviceImpl implements ProductService {
     public int countProducts() {
         return productRepository.countProducts();
     }
+    @Override
+    public void deleteMultipleProducts(List<Integer> ids) {
+        ids.forEach(productRepository::deleteProduct);
+    }
 }
