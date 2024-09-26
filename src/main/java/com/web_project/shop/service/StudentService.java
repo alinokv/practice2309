@@ -14,5 +14,10 @@ public interface StudentService {
 
     public StudentModel updateStudent(StudentModel student);
 
-    public void deleteStudent(int id);
+    void deleteStudent(int id); // Физическое удаление
+    void softDeleteStudent(int id); // Логическое удаление
+    List<StudentModel> findByCourse(int course); // Фильтрация по курсу
+    List<StudentModel> findByParam(String param); // Поиск по параметрам (кроме id)
+
+
 }

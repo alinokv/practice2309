@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 @RequestMapping("/students")
 public class StudentController {
@@ -24,8 +23,9 @@ public class StudentController {
     public String addStudent(@RequestParam String name,
                              @RequestParam String firstName,
                              @RequestParam String lastName,
-                             @RequestParam String corpEmail) {
-        StudentModel newStudent = new StudentModel(0, name, firstName, lastName, corpEmail);
+                             @RequestParam String corpEmail,
+                             @RequestParam int course) { // Добавлен параметр курса
+        StudentModel newStudent = new StudentModel(0, name, firstName, lastName, corpEmail, course);
         studentService.addStudent(newStudent);
         return "redirect:/students/all";
     }
@@ -35,24 +35,39 @@ public class StudentController {
                                 @RequestParam String name,
                                 @RequestParam String firstName,
                                 @RequestParam String lastName,
-                                @RequestParam String corpEmail) {
-        StudentModel updateStudent = new StudentModel(id, name, firstName, lastName, corpEmail);
+                                @RequestParam String corpEmail,
+                                @RequestParam int Course) { // Добавлен параметр курса
+        StudentModel updateStudent = new StudentModel(id, name, firstName, lastName, corpEmail, Course);
         studentService.updateStudent(updateStudent);
         return "redirect:/students/all";
     }
 
     @PostMapping("/delete")
     public String deleteStudent(@RequestParam int id) {
-        studentService.deleteStudent(id);
+        studentService.deleteStudent(id); // Физическое удаление
         return "redirect:/students/all";
     }
 
-    @GetMapping("/all/{id}")
-    public String getIdStudent(@PathVariable("id") int id, Model model) {
-        model.addAttribute("students", studentService.findStudentById(id));
+    @PostMapping("/soft-delete")
+    public String softDeleteStudent(@RequestParam int id) {
+        studentService.softDeleteStudent(id); // Логическое удаление
+        return "redirect:/students/all";
+    }
+
+    @GetMapping("/filter")
+    public String filterByCourse(@RequestParam int course, Model model) {
+        model.addAttribute("students", studentService.findByCourse(course));
         return "studentList";
     }
 
-
+    @GetMapping("/search")
+    public String searchByParam(@RequestParam String param, Model model) {
+        model.addAttribute("students", studentService.findByParam(param));
+        return "studentList";
+    }
+    @GetMapping("/all/{id}")
+    public String getStudentId(@PathVariable("id") int id, Model model) {
+        model.addAttribute("students", studentService.findStudentById(id));
+        return "studentList";
+    }
 }
-

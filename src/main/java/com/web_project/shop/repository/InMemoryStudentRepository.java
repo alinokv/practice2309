@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -13,7 +14,7 @@ public class InMemoryStudentRepository {
     private AtomicInteger idCounter = new AtomicInteger(1);
 
     public List<StudentModel> findAllStudents() {
-        return new ArrayList<>(students);
+        return students.stream().filter(student -> !student.isDeleted()).collect(Collectors.toList());
     }
 
     public StudentModel addStudent(StudentModel student) {
@@ -32,12 +33,34 @@ public class InMemoryStudentRepository {
         return null;
     }
 
-    public void deleteStudent(int id){
-        students.removeIf(student -> student.getId() == id);
+    public void deleteStudent(int id) {
+        students.removeIf(student -> student.getId() == id); // Физическое удаление
     }
 
-    public StudentModel findStudentById(int id){
-        return students.stream().filter(student -> student.getId() == id).findFirst().orElse(null);
+    public void softDeleteStudent(int id) {
+        students.stream().filter(student -> student.getId() == id).forEach(student -> student.setDeleted(true)); // Логическое удаление
+    }
+
+    public StudentModel findStudentById(int id) {
+        return students.stream()
+                .filter(student -> student.getId() == id )
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<StudentModel> findByCourse(int course) {
+        return students.stream()
+                .filter(student -> student.getCourse() == course && !student.isDeleted()) // Поиск по курсу и не удалённые
+                .collect(Collectors.toList());
+    }
+
+    public List<StudentModel> findByParam(String param) {
+        return students.stream()
+                .filter(student -> (student.getName().equalsIgnoreCase(param)
+                        || student.getFirstName().equalsIgnoreCase(param)
+                        || (student.getLastName() != null && student.getLastName().equalsIgnoreCase(param)))
+                        && !student.isDeleted()) // Поиск по параметрам, исключая удалённых
+                .collect(Collectors.toList());
     }
 }
 

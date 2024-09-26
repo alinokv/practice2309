@@ -10,13 +10,17 @@ public class StudentModel {
     private String LastName;
     @Nullable
     private String CorpEmail;
+    private boolean isDeleted; // Логическое удаление
+    private int Course; // Новое поле для курса
 
-    public StudentModel(int id, String name, String firstName, @Nullable String lastName, @Nullable String corpEmail) {
+    public StudentModel(int id, String name, String firstName, @Nullable String lastName, @Nullable String corpEmail, int course) {
         Id = id;
         Name = name;
         FirstName = firstName;
         LastName = lastName;
         CorpEmail = corpEmail;
+        isDeleted = false; // Изначально не удалён
+        Course = course;
     }
 
     public int getId() {
@@ -59,5 +63,21 @@ public class StudentModel {
 
     public void setCorpEmail(@Nullable String corpEmail) {
         CorpEmail = corpEmail;
+    }
+
+    public int getCourse() {
+        return Course;
+    }
+
+    public void setCourse(int course) {
+        Course = course;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
