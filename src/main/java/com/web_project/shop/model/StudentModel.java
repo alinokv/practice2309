@@ -12,39 +12,49 @@ import jakarta.validation.constraints.Size;
 public class StudentModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
-    @Size(min = 3, message = "мало букав")
+    private Long Id;
+    @Size(min = 3, message = "Имя не менее 3 символов")
     private String Name;
-    @Size(min = 3, message = "мало букав")
+    @Size(min = 3, message = "Фамилия не менее 3 символов")
     private String FirstName;
     @Nullable
     private String LastName;
+    @Nullable
+    @Email(message = "Емеил не корректен")
+    private String CorpEmail;
 
-    public StudentModel(long i, String name, String firstName, String lastName, String corpEmail, int course){
-
+    public StudentModel() {
     }
 
-    public long getId() {
+    public StudentModel(Long id, String name, String firstName, @Nullable String lastName, @Nullable String corpEmail) {
+        Id = id;
+        Name = name;
+        FirstName = firstName;
+        LastName = lastName;
+        CorpEmail = corpEmail;
+    }
+
+    public Long getId() {
         return Id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         Id = id;
     }
 
-    public @Size(min = 3, message = "мало букав") String getName() {
+    public @Size(min = 3, message = "Имя не менее 3 символов") String getName() {
         return Name;
     }
 
-    public void setName(@Size(min = 3, message = "мало букав") String name) {
+    public void setName(@Size(min = 3, message = "Имя не менее 3 символов") String name) {
         Name = name;
     }
 
-    public @Size(min = 3, message = "мало букав") String getFirstName() {
+    public @Size(min = 3, message = "Фамилия не менее 3 символов") String getFirstName() {
         return FirstName;
     }
 
-    public void setFirstName(@Size(min = 3, message = "мало букав") String firstName) {
+    public void setFirstName(@Size(min = 3, message = "Фамилия не менее 3 символов") String firstName) {
         FirstName = firstName;
     }
 
@@ -58,43 +68,11 @@ public class StudentModel {
     }
 
     @Nullable
-    public @Email(message = "не корректно") String getCorpEmail() {
+    public @Email(message = "Емеил не корректен") String getCorpEmail() {
         return CorpEmail;
     }
 
-    public void setCorpEmail(@Nullable @Email(message = "не корректно") String corpEmail) {
+    public void setCorpEmail(@Nullable @Email(message = "Емеил не корректен") String corpEmail) {
         CorpEmail = corpEmail;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
-    public int getCourse() {
-        return Course;
-    }
-
-    public void setCourse(int course) {
-        Course = course;
-    }
-
-    @Nullable
-    @Email(message = "не корректно")
-    private String CorpEmail;
-    private boolean isDeleted;
-    private int Course;
-
-    public StudentModel(int course, boolean isDeleted, @Nullable String corpEmail, @Nullable String lastName, String firstName, String name, long id) {
-        Course = course;
-        this.isDeleted = isDeleted;
-        CorpEmail = corpEmail;
-        LastName = lastName;
-        FirstName = firstName;
-        Name = name;
-        Id = id;
     }
 }

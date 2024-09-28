@@ -6,61 +6,46 @@
 </head>
 <body>
 <h1>Список продуктов</h1>
-<form action="/products/add" method="post">
-  <input type="text" name="name" placeholder="Имя" required>
-  <input type="text" name="price" placeholder="Цена" required>
-  <button type="submit" formmethod="post">Добавить</button>
+
+<!-- Форма для добавления продукта -->
+<form action="/products/add" method="post" th:object="${product}">
+  <input type="text" name="name" placeholder="Имя продукта" th:field="*{name}" required>
+  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Имя должно содержать минимум 3 символа</div>
+
+  <input type="text" name="price" placeholder="Цена продукта" th:field="*{price}" required>
+  <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Цена должна быть положительным числом</div>
+
+  <input type="text" name="quantity" placeholder="Количество" th:field="*{quantity}" required>
+  <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">Количество должно быть от 1 до 100</div>
+
+  <input type="date" name="dateorder" placeholder="Дата заказа" th:field="*{dateorder}">
+  <button type="submit" formmethod="post">Добавить продукт</button>
 </form>
 
 <h2>Все продукты: </h2>
-  <ul>
-    <th:block th:each="product : ${products}">
-      <li>
-        <input type="checkbox" name="ids" th:value="${product.id}">
-        <span th:text="${product.id} + ' ' + ${product.name} + ' ' + ${product.price}"></span>
-        <form action="/products/update" method="post" style="display:inline;">
-          <input type="hidden" name="id" th:value="${product.id}">
-          <input type="text" name="name" th:value="${product.name}" placeholder="Имя" required>
-          <input type="text" name="price" th:value="${product.price}" placeholder="Цена" required>
-          <button type="submit" formmethod="post">Обновить</button>
-        </form>
-      </li>
-    </th:block>
-  </ul>
+<ul>
+  <th:block th:each="product : ${products}">
+    <li>
+      <span th:text="${product.name} + ' ' + ${product.price} + ' ' + ${product.quantity} + ' ' + ${product.dateorder}"></span>
 
-<form action="/products/delete-multiple" method="post">
-  <table>
-    <thead>
-    <tr>
-      <th>Выбрать</th>
-      <th>Имя</th>
-      <th>Цена</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="product : ${products}">
-      <td>
-        <input type="checkbox" name="productIds" th:value="${product.id}" />
-      </td>
-      <td th:text="${product.name}"></td>
-      <td th:text="${product.price}"></td>
-    </tr>
-    </tbody>
-  </table>
-  <button type="submit">Удалить выбранные</button>
-</form>
+      <!-- Форма для обновления продукта -->
+      <form action="/products/update" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${product.id}">
+        <input type="text" name="name" th:value="${product.name}" placeholder="Имя продукта" required>
+        <input type="text" name="price" th:value="${product.price}" placeholder="Цена продукта" required>
+        <input type="text" name="quantity" th:value="${product.quantity}" placeholder="Количество" required>
+        <input type="date" name="dateorder" th:value="${product.dateorder}" placeholder="Дата заказа">
+        <button type="submit" formmethod="post">Обновить</button>
+      </form>
 
-
-<div>
-  <span>Страница: </span>
-  <ul>
-    <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
-      <li>
-        <a th:href="@{/products/all(page=${i})}" th:text="${i}"></a>
-      </li>
-    </th:block>
-  </ul>
-</div>
+      <!-- Форма для удаления продукта -->
+      <form action="/products/delete" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${product.id}">
+        <button type="submit" formmethod="post">Удалить</button>
+      </form>
+    </li>
+  </th:block>
+</ul>
 
 </body>
 </html>

@@ -2,25 +2,27 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Список продуктов</title>
+  <title>Список категорий</title>
 </head>
 <body>
 <h1>Список категорий</h1>
-<form action="/categories/add" method="post">
-  <input type="text" name="Name" placeholder="Имя" required>
-  <input type="text" name="Description" placeholder="Описание" required>
-  <button type="submit" formmethod="post">Добавить</button>
+<form action="/categories/add" method="post" th:object="${category}">
+  <input type="text" name="name" placeholder="Название категории" th:field="*{name}" required>
+  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название не должно быть меньше чем 3 символа</div>
+  <input type="text" name="description" placeholder="Описание категории" th:field="*{description}" required>
+  <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Описание не должно быть меньше чем 3 символа</div>
+  <button type="submit" formmethod="post">Добавить категорию</button>
 </form>
 
 <h2>Все категории: </h2>
 <ul>
   <th:block th:each="category : ${categories}">
     <li>
-      <span th:text="${category.id} + ' ' + ${category.Name} + ' ' + ${category.Description}"></span>
+      <span th:text="${category.name} + ' - ' + ${category.description}"></span>
       <form action="/categories/update" method="post" style="display:inline;">
         <input type="hidden" name="id" th:value="${category.id}">
-        <input type="text" name="Name" th:value="${category.Name}" placeholder="Имя" required>
-        <input type="text" name="Description" th:value="${category.Description}" placeholder="Описание" required>
+        <input type="text" name="name" th:value="${category.name}" placeholder="Название" required>
+        <input type="text" name="description" th:value="${category.description}" placeholder="Описание" required>
         <button type="submit" formmethod="post">Обновить</button>
       </form>
       <form action="/categories/delete" method="post" style="display:inline;">
