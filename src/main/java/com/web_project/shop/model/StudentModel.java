@@ -1,49 +1,50 @@
 package com.web_project.shop.model;
 
 import jakarta.annotation.Nullable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
+@Entity
 public class StudentModel {
-    private int Id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long Id;
+    @Size(min = 3, message = "мало букав")
     private String Name;
+    @Size(min = 3, message = "мало букав")
     private String FirstName;
     @Nullable
     private String LastName;
-    @Nullable
-    private String CorpEmail;
-    private boolean isDeleted;
-    private int Course;
 
-    public StudentModel(int id, String name, String firstName, @Nullable String lastName, @Nullable String corpEmail, int course) {
-        Id = id;
-        Name = name;
-        FirstName = firstName;
-        LastName = lastName;
-        CorpEmail = corpEmail;
-        isDeleted = false;
-        Course = course;
+    public StudentModel(long i, String name, String firstName, String lastName, String corpEmail, int course){
+
     }
 
-    public int getId() {
+    public long getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         Id = id;
     }
 
-    public String getName() {
+    public @Size(min = 3, message = "мало букав") String getName() {
         return Name;
     }
 
-    public void setName(String name) {
+    public void setName(@Size(min = 3, message = "мало букав") String name) {
         Name = name;
     }
 
-    public String getFirstName() {
+    public @Size(min = 3, message = "мало букав") String getFirstName() {
         return FirstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(@Size(min = 3, message = "мало букав") String firstName) {
         FirstName = firstName;
     }
 
@@ -57,12 +58,20 @@ public class StudentModel {
     }
 
     @Nullable
-    public String getCorpEmail() {
+    public @Email(message = "не корректно") String getCorpEmail() {
         return CorpEmail;
     }
 
-    public void setCorpEmail(@Nullable String corpEmail) {
+    public void setCorpEmail(@Nullable @Email(message = "не корректно") String corpEmail) {
         CorpEmail = corpEmail;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
     public int getCourse() {
@@ -73,11 +82,19 @@ public class StudentModel {
         Course = course;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
+    @Nullable
+    @Email(message = "не корректно")
+    private String CorpEmail;
+    private boolean isDeleted;
+    private int Course;
 
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+    public StudentModel(int course, boolean isDeleted, @Nullable String corpEmail, @Nullable String lastName, String firstName, String name, long id) {
+        Course = course;
+        this.isDeleted = isDeleted;
+        CorpEmail = corpEmail;
+        LastName = lastName;
+        FirstName = firstName;
+        Name = name;
+        Id = id;
     }
 }
