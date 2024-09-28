@@ -14,7 +14,7 @@ public class StudentModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     @Size(min = 3, message = "Имя не менее 3 символов")
-    private String Name;
+    private String name;
     @Size(min = 3, message = "Фамилия не менее 3 символов")
     private String FirstName;
     @Nullable
@@ -28,7 +28,7 @@ public class StudentModel {
 
     public StudentModel(Long id, String name, String firstName, @Nullable String lastName, @Nullable String corpEmail) {
         Id = id;
-        Name = name;
+        this.name = name;
         FirstName = firstName;
         LastName = lastName;
         CorpEmail = corpEmail;
@@ -43,11 +43,11 @@ public class StudentModel {
     }
 
     public @Size(min = 3, message = "Имя не менее 3 символов") String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(@Size(min = 3, message = "Имя не менее 3 символов") String name) {
-        Name = name;
+        this.name = name;
     }
 
     public @Size(min = 3, message = "Фамилия не менее 3 символов") String getFirstName() {

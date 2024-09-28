@@ -51,5 +51,10 @@ public class StudentController {
         return "studentList";
     }
 
-
+    @GetMapping("/search")
+    public String searchStudentsByName(@RequestParam("name") String Name, Model model) {
+        model.addAttribute("students", studentService.findStudentsByName(Name));
+        model.addAttribute("student", new StudentModel());
+        return "studentList";
+    }
 }

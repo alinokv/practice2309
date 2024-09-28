@@ -45,4 +45,8 @@ public class InMemoryStudentServiceImpl implements StudentService{
         }
     }
 
+    @Override
+    public StudentModel findStudentsByName(String Name) {
+        return studentRepository.findByName(Name);
+    }
 }

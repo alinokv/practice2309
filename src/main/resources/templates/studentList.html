@@ -17,6 +17,12 @@
     <button type="submit" formmethod="post">Добавить студента</button>
 </form>
 
+<h2>Поиск студентов</h2>
+<form action="/students/search" method="get">
+    <input type="text" name="name" placeholder="Введите имя">
+    <button type="submit">Поиск</button>
+</form>
+
 <h2>Все студенты: </h2>
 <ul>
     <th:block th:each="student : ${students}">

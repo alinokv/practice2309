@@ -14,4 +14,6 @@ public interface StudentService {
     public StudentModel updateStudent(StudentModel student);
 
     public void deleteStudent(Long id);
+
+    public StudentModel findStudentsByName(String Name);
 }
