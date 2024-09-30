@@ -62,7 +62,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentServiceImpl extends GenericServiceImpl<StudentModel, Long> implements StudentService {
     private final StudentRepository studentRepository;
-
     public StudentServiceImpl(StudentRepository studentRepository) {
         super(studentRepository);
         this.studentRepository = studentRepository;

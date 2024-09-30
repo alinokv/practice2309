@@ -57,6 +57,7 @@ public class CategoryController {
 package com.web_project.shop.controllers;
 
 import com.web_project.shop.model.CategoryModel;
+import com.web_project.shop.service.CategoryService;
 import com.web_project.shop.service.CategoryServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
