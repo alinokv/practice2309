@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/students")
 public class StudentController {
     @Autowired
-    public StudentService studentService;
+    private StudentService studentService;
 
     @GetMapping("/all")
     public String getAllStudents(Model model) {
-        model.addAttribute("students", studentService.findAllStudents());
+        model.addAttribute("students", studentService.findAll());
         model.addAttribute("student", new StudentModel());
         return "studentList";
     }
@@ -25,35 +25,35 @@ public class StudentController {
     @PostMapping("/add")
     public String addStudent(@Valid @ModelAttribute("student") StudentModel student, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("students", studentService.findAllStudents());
+            model.addAttribute("students", studentService.findAll());
             return "studentList";
         }
-        studentService.addStudent(student);
+        studentService.add(student);
         return "redirect:/students/all";
     }
 
     @PostMapping("/update")
     public String updateStudent(@Valid @ModelAttribute("student") StudentModel student, BindingResult result) {
-        studentService.updateStudent(student);
+        studentService.update(student);
         return "redirect:/students/all";
     }
 
     @PostMapping("/delete")
     public String deleteStudent(@RequestParam Long id) {
-        studentService.deleteStudent(id);
+        studentService.delete(id);
         return "redirect:/students/all";
     }
 
     @GetMapping("/all/{id}")
-    public String getIdStudent(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("students", studentService.findStudentById(id));
+    public String getStudentById(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("students", studentService.findById(id));
         model.addAttribute("student", new StudentModel());
         return "studentList";
     }
 
     @GetMapping("/search")
-    public String searchStudentsByName(@RequestParam("name") String Name, Model model) {
-        model.addAttribute("students", studentService.findStudentsByName(Name));
+    public String searchStudentsByName(@RequestParam("name") String name, Model model) {
+        model.addAttribute("students", studentService.findByName(name));
         model.addAttribute("student", new StudentModel());
         return "studentList";
     }

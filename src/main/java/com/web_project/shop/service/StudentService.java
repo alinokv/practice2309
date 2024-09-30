@@ -1,3 +1,4 @@
+/*
 package com.web_project.shop.service;
 
 import com.web_project.shop.model.StudentModel;
@@ -16,4 +17,12 @@ public interface StudentService {
     public void deleteStudent(Long id);
 
     public StudentModel findStudentsByName(String Name);
+}
+*/
+package com.web_project.shop.service;
+
+import com.web_project.shop.model.StudentModel;
+
+public interface StudentService extends GenericService<StudentModel, Long> {
+    StudentModel findByName(String name);
 }

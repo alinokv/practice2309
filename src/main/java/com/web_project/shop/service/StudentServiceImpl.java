@@ -1,3 +1,4 @@
+/*
 package com.web_project.shop.service;
 
 import com.web_project.shop.model.StudentModel;
@@ -48,5 +49,27 @@ public class InMemoryStudentServiceImpl implements StudentService{
     @Override
     public StudentModel findStudentsByName(String Name) {
         return studentRepository.findByName(Name);
+    }
+}
+*/
+
+package com.web_project.shop.service;
+
+import com.web_project.shop.model.StudentModel;
+import com.web_project.shop.repository.StudentRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class StudentServiceImpl extends GenericServiceImpl<StudentModel, Long> implements StudentService {
+    private final StudentRepository studentRepository;
+
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        super(studentRepository);
+        this.studentRepository = studentRepository;
+    }
+
+    @Override
+    public StudentModel findByName(String name) {
+        return studentRepository.findByName(name);
     }
 }
