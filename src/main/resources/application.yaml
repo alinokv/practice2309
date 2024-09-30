@@ -2,7 +2,7 @@ spring:
   config:
     name: shop
   datasource:
-    url: jdbc:postgresql://localhost:5432/shopdb
+    url: jdbc:postgresql://localhost:5432/Myshopdb
     username: postgres
     password: 123
     driver-class-name: org.postgresql.Driver

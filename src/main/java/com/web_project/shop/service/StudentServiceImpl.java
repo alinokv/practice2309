@@ -59,16 +59,18 @@ import com.web_project.shop.model.StudentModel;
 import com.web_project.shop.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
-public class StudentServiceImpl extends GenericServiceImpl<StudentModel, Long> implements StudentService {
+public class StudentServiceImpl extends GenericServiceImpl<StudentModel, UUID> implements StudentService {
     private final StudentRepository studentRepository;
     public StudentServiceImpl(StudentRepository studentRepository) {
         super(studentRepository);
         this.studentRepository = studentRepository;
     }
 
-    @Override
-    public StudentModel findByName(String name) {
-        return studentRepository.findByName(name);
-    }
+//    @Override
+//    public StudentModel findByName(String name) {
+//        return studentRepository.findByName(name);
+//    }
 }

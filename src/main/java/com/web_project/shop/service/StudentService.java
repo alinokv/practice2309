@@ -23,6 +23,8 @@ package com.web_project.shop.service;
 
 import com.web_project.shop.model.StudentModel;
 
-public interface StudentService extends GenericService<StudentModel, Long> {
-    StudentModel findByName(String name);
+import java.util.UUID;
+
+public interface StudentService extends GenericService<StudentModel, UUID> {
+//    StudentModel findByName(String name);
 }
