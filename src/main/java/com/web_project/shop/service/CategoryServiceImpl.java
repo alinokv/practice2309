@@ -50,8 +50,10 @@ import com.web_project.shop.model.CategoryModel;
 import com.web_project.shop.repository.Category_Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
-public class CategoryServiceImpl extends GenericServiceImpl<CategoryModel, Long> {
+public class CategoryServiceImpl extends GenericServiceImpl<CategoryModel, UUID> {
     public CategoryServiceImpl(Category_Repository repository) {
         super(repository);
     }

@@ -19,6 +19,20 @@
   <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">Количество должно быть от 1 до 100</div>
 
   <input type="date" name="dateorder" placeholder="Дата заказа" th:field="*{dateorder}">
+
+  <!-- Выбор категории -->
+  <select name="category" th:field="*{category.id}">
+    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+  </select>
+
+  <!-- Выбор тегов -->
+  <div th:each="tag : ${tags}">
+    <label>
+      <input type="checkbox" name="tags" th:value="${tag.id}" th:checked="${product.tags.contains(tag)}">
+      <span th:text="${tag.name}"></span>
+    </label>
+  </div>
+
   <button type="submit" formmethod="post">Добавить продукт</button>
 </form>
 
@@ -26,7 +40,12 @@
 <ul>
   <th:block th:each="product : ${products}">
     <li>
-      <span th:text="${product.name} + ' ' + ${product.price} + ' ' + ${product.quantity} + ' ' + ${product.dateorder}"></span>
+      <span th:text="${product.name} + ' ' + ${product.price} + ' ' + ${product.quantity} + ' ' + ${product.dateorder} + ' ' + ${product.category.name}"></span>
+
+      <!-- Вывод тегов -->
+      <div th:each="tag : ${product.tags}">
+        <span th:text="${tag.name}"></span>
+      </div>
 
       <!-- Форма для обновления продукта -->
       <form action="/products/update" method="post" style="display:inline;">
@@ -35,6 +54,20 @@
         <input type="text" name="price" th:value="${product.price}" placeholder="Цена продукта" required>
         <input type="text" name="quantity" th:value="${product.quantity}" placeholder="Количество" required>
         <input type="date" name="dateorder" th:value="${product.dateorder}" placeholder="Дата заказа">
+
+        <!-- Выбор категории для обновления -->
+        <select name="category" th:field="*{category.id}">
+          <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id == product.category.id}"></option>
+        </select>
+
+        <!-- Обновление тегов -->
+        <div th:each="tag : ${tags}">
+          <label>
+            <input type="checkbox" name="tags" th:value="${tag.id}" th:checked="${product.tags.contains(tag)}">
+            <span th:text="${tag.name}"></span>
+          </label>
+        </div>
+
         <button type="submit" formmethod="post">Обновить</button>
       </form>
 

@@ -1,39 +1,45 @@
 package com.web_project.shop.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.Set;
+import java.util.UUID;
+
 @Entity
+@Table(name = "categories")
 public class CategoryModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
+
     @Size(min = 3, message = "Имя не менее 3 символов")
     @NotNull
     private String name;
-    @Size(min = 3, message = "Имя не менее 3 символов")
+
+    @Size(min = 3, message = "Описание не менее 3 символов")
     @NotNull
     private String description;
 
-    public CategoryModel(){
+    @OneToMany(mappedBy = "category")
+    private Set<ProductModel> products;
 
+    public CategoryModel() {
     }
 
-    public CategoryModel(Long id, String name, String description) {
+    public CategoryModel(UUID id, String name, String description, Set<ProductModel> products) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.products = products;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -45,11 +51,19 @@ public class CategoryModel {
         this.name = name;
     }
 
-    public @Size(min = 3, message = "Имя не менее 3 символов") @NotNull String getDescription() {
+    public @Size(min = 3, message = "Описание не менее 3 символов") @NotNull String getDescription() {
         return description;
     }
 
-    public void setDescription(@Size(min = 3, message = "Имя не менее 3 символов") @NotNull String description) {
+    public void setDescription(@Size(min = 3, message = "Описание не менее 3 символов") @NotNull String description) {
         this.description = description;
+    }
+
+    public Set<ProductModel> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<ProductModel> products) {
+        this.products = products;
     }
 }
