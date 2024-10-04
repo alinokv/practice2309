@@ -1,51 +1,96 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Список продуктов</title>
+  <title>Product List</title>
+  <link rel="stylesheet" href="/css/styles.css"> <!-- Стили -->
 </head>
 <body>
-<h1>Список продуктов</h1>
+<h1>Products</h1>
 
-<!-- Форма для добавления продукта -->
-<form action="/products/add" method="post" th:object="${product}">
-  <input type="text" name="name" placeholder="Имя продукта" th:field="*{name}" required>
-  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Имя должно содержать минимум 3 символа</div>
+<!-- Форма добавления или редактирования продукта -->
+<form th:action="@{/products/add}" th:object="${product}" method="post">
+  <input type="hidden" th:field="*{id}" />
 
-  <input type="text" name="price" placeholder="Цена продукта" th:field="*{price}" required>
-  <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Цена должна быть положительным числом</div>
+  <label for="name">Name:</label>
+  <input type="text" id="name" th:field="*{name}" />
+  <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 
-  <input type="text" name="quantity" placeholder="Количество" th:field="*{quantity}" required>
-  <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">Количество должно быть от 1 до 100</div>
+  <label for="price">Price:</label>
+  <input type="number" step="0.01" id="price" th:field="*{price}" />
+  <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
 
-  <input type="date" name="dateorder" placeholder="Дата заказа" th:field="*{dateorder}">
-  <button type="submit" formmethod="post">Добавить продукт</button>
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" th:field="*{quantity}" />
+  <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+
+  <label for="dateorder">Date:</label>
+  <input type="date" id="dateorder" th:field="*{dateorder}" />
+  <span th:if="${#fields.hasErrors('dateorder')}" th:errors="*{dateorder}"></span>
+
+  <!-- Категории -->
+  <label for="category">Category:</label>
+  <select id="category" th:field="*{category.id}">
+    <option th:each="category : ${categories}"
+            th:value="${category.id}"
+            th:text="${category.name}">
+    </option>
+  </select>
+
+  <!-- Бренды -->
+  <label for="brand">Brand:</label>
+  <select id="brand" th:field="*{brand.id}">
+    <option th:each="brand : ${brands}"
+            th:value="${brand.id}"
+            th:text="${brand.name}">
+    </option>
+  </select>
+
+  <!-- Теги -->
+  <label for="tags">Tags:</label>
+  <select multiple id="tags" th:field="*{tags}">
+    <option th:each="tag : ${tags}"
+            th:value="${tag.id}"
+            th:text="${tag.name}">
+    </option>
+  </select>
+
+  <button type="submit">Save Product</button>
 </form>
 
-<h2>Все продукты: </h2>
-<ul>
-  <th:block th:each="product : ${products}">
-    <li>
-      <span th:text="${product.name} + ' ' + ${product.price} + ' ' + ${product.quantity} + ' ' + ${product.dateorder}"></span>
-
-      <!-- Форма для обновления продукта -->
-      <form action="/products/update" method="post" style="display:inline;">
-        <input type="hidden" name="id" th:value="${product.id}">
-        <input type="text" name="name" th:value="${product.name}" placeholder="Имя продукта" required>
-        <input type="text" name="price" th:value="${product.price}" placeholder="Цена продукта" required>
-        <input type="text" name="quantity" th:value="${product.quantity}" placeholder="Количество" required>
-        <input type="date" name="dateorder" th:value="${product.dateorder}" placeholder="Дата заказа">
-        <button type="submit" formmethod="post">Обновить</button>
+<!-- Список продуктов -->
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Category</th>
+    <th>Brand</th>
+    <th>Tags</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.name}"></td>
+    <td th:text="${product.price}"></td>
+    <td th:text="${product.quantity}"></td>
+    <td th:text="${product.category.name}"></td>
+    <td th:text="${product.brand.name}"></td>
+    <td>
+      <span th:each="tag : ${product.tags}" th:text="${tag.name} + ' '"></span>
+    </td>
+    <td>
+      <!-- Кнопки для редактирования и удаления -->
+      <a th:href="@{/products/all/{id}(id=${product.id})}">Edit</a>
+      <form th:action="@{/products/delete}" method="post" style="display:inline">
+        <input type="hidden" th:value="${product.id}" name="id"/>
+        <button type="submit">Delete</button>
       </form>
-
-      <!-- Форма для удаления продукта -->
-      <form action="/products/delete" method="post" style="display:inline;">
-        <input type="hidden" name="id" th:value="${product.id}">
-        <button type="submit" formmethod="post">Удалить</button>
-      </form>
-    </li>
-  </th:block>
-</ul>
-
+    </td>
+  </tr>
+  </tbody>
+</table>
 </body>
 </html>

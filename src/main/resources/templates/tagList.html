@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список тегов</title>
+</head>
+<body>
+<h1>Список тегов</h1>
+
+<!-- Форма для добавления нового тега -->
+<form action="/tags/add" method="post" th:object="${tag}">
+  <input type="text" name="name" placeholder="Название тега" th:field="*{name}" required>
+  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название не менее 3 символов</div>
+  <button type="submit" formmethod="post">Добавить тег</button>
+</form>
+
+<h2>Все теги:</h2>
+<ul>
+  <th:block th:each="tag : ${tags}">
+    <li>
+      <span th:text="${tag.name}"></span>
+
+      <!-- Форма для обновления тега -->
+      <form action="/tags/update" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${tag.id}">
+        <input type="text" name="name" th:value="${tag.name}" placeholder="Название" required>
+        <button type="submit" formmethod="post">Обновить</button>
+      </form>
+
+      <!-- Форма для удаления тега -->
+      <form action="/tags/delete" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${tag.id}">
+        <button type="submit" formmethod="post">Удалить</button>
+      </form>
+    </li>
+  </th:block>
+</ul>
+
+</body>
+</html>

@@ -66,6 +66,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/categories")
 public class CategoryController {
@@ -96,13 +98,13 @@ public class CategoryController {
     }
 
     @PostMapping("/delete")
-    public String deleteCategory(@RequestParam Long id) {
+    public String deleteCategory(@RequestParam UUID id) {
         categoryService.delete(id);
         return "redirect:/categories/all";
     }
 
     @GetMapping("/all/{id}")
-    public String getCategoryById(@PathVariable("id") Long id, Model model) {
+    public String getCategoryById(@PathVariable("id") UUID id, Model model) {
         model.addAttribute("categories", categoryService.findById(id));
         model.addAttribute("category", new CategoryModel());
         return "categoryList";

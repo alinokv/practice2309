@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список брендов</title>
+</head>
+<body>
+<h1>Список брендов</h1>
+
+<!-- Форма для добавления нового бренда -->
+<form action="/brands/add" method="post" th:object="${brand}">
+  <input type="text" name="name" placeholder="Название бренда" th:field="*{name}" required>
+  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название не менее 3 символов</div>
+
+  <input type="text" name="description" placeholder="Описание бренда" th:field="*{description}" required>
+  <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Описание не менее 3 символов</div>
+
+  <button type="submit" formmethod="post">Добавить бренд</button>
+</form>
+
+<h2>Все бренды:</h2>
+<ul>
+  <th:block th:each="brand : ${brands}">
+    <li>
+      <span th:text="${brand.name} + ' - ' + ${brand.description}"></span>
+
+      <!-- Форма для обновления бренда -->
+      <form action="/brands/update" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${brand.id}">
+        <input type="text" name="name" th:value="${brand.name}" placeholder="Название" required>
+        <input type="text" name="description" th:value="${brand.description}" placeholder="Описание" required>
+        <button type="submit" formmethod="post">Обновить</button>
+      </form>
+
+      <!-- Форма для удаления бренда -->
+      <form action="/brands/delete" method="post" style="display:inline;">
+        <input type="hidden" name="id" th:value="${brand.id}">
+        <button type="submit" formmethod="post">Удалить</button>
+      </form>
+    </li>
+  </th:block>
+</ul>
+
+</body>
+</html>

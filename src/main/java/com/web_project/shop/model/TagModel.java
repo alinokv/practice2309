@@ -8,8 +8,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-//@Table(name = "categories")
-public class CategoryModel {
+//@Table(name = "tags")
+public class TagModel {
     @Id
     @GeneratedValue
     private UUID id;
@@ -18,21 +18,16 @@ public class CategoryModel {
     @NotNull
     private String name;
 
-    @Size(min = 3, message = "Описание не менее 3 символов")
-    @NotNull
-    private String description;
-
-    // Связь OneToMany с Product
-    @OneToMany(mappedBy = "category")
+    // Связь ManyToMany с Product
+    @ManyToMany(mappedBy = "tags")
     private Set<ProductModel> products;
 
+    // Конструкторы, геттеры и сеттеры
+    public TagModel() { }
 
-    public CategoryModel() { }
-
-    public CategoryModel(UUID id, String name, String description) {
+    public TagModel(UUID id, String name) {
         this.id = id;
         this.name = name;
-        this.description = description;
     }
 
     public UUID getId() {
@@ -49,14 +44,6 @@ public class CategoryModel {
 
     public void setName(@Size(min = 3, message = "Имя не менее 3 символов") @NotNull String name) {
         this.name = name;
-    }
-
-    public @Size(min = 3, message = "Описание не менее 3 символов") @NotNull String getDescription() {
-        return description;
-    }
-
-    public void setDescription(@Size(min = 3, message = "Описание не менее 3 символов") @NotNull String description) {
-        this.description = description;
     }
 
     public Set<ProductModel> getProducts() {

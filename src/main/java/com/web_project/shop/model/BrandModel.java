@@ -8,8 +8,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-//@Table(name = "categories")
-public class CategoryModel {
+//@Table(name = "brands")
+public class BrandModel {
     @Id
     @GeneratedValue
     private UUID id;
@@ -23,13 +23,13 @@ public class CategoryModel {
     private String description;
 
     // Связь OneToMany с Product
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "brand")
     private Set<ProductModel> products;
 
+    // Конструкторы, геттеры и сеттеры
+    public BrandModel() { }
 
-    public CategoryModel() { }
-
-    public CategoryModel(UUID id, String name, String description) {
+    public BrandModel(UUID id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -66,6 +66,4 @@ public class CategoryModel {
     public void setProducts(Set<ProductModel> products) {
         this.products = products;
     }
-
-
 }
