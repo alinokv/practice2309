@@ -5,6 +5,7 @@
     <title>Home page</title>
 </head>
 <body>
+<div th:insert="blocks/header"></div>
     <p th:text="${name}"> </p>
     <h1>Главная страница</h1>
     <button onclick="location.href='/calculator'">Калькулятор</button>

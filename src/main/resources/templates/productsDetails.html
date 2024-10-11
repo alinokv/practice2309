@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .product-image {
+      max-width: 200px; /* Ограничение ширины изображения */
+      max-height: 200px; /* Ограничение высоты изображения */
+      object-fit: cover; /* Обрезка изображения по размеру */
+    }
+  </style>
+</head>
+<body>
+<div th:insert="blocks/ClioHeader"></div>
+<div class="container mt-4">
+  <h1 th:text="${product.name}" class="mb-4"></h1>
+
+  <div class="row">
+    <div class="col-md-4">
+      <img class="product-image img-fluid" th:src="${product.image}" alt="Product Image">
+    </div>
+    <div class="col-md-8">
+      <h5 class="card-title">Price: $<span th:text="${product.price}">100.00</span></h5>
+      <p class="card-text"><strong>Description:</strong> <span th:text="${product.description}">Product description...</span></p>
+      <p class="card-text"><strong>Quantity:</strong> <span th:text="${product.quantity}">1</span></p>
+      <p class="card-text"><strong>Date Ordered:</strong> <span th:text="${#dates.format(product.dateOrder, 'yyyy-MM-dd')}">2023-01-01</span></p>
+      <p class="card-text"><strong>Category:</strong> <span th:text="${product.category.name}">Category Name</span></p>
+      <p class="card-text"><strong>Brand:</strong> <span th:text="${product.brand.name}">Brand Name</span></p>
+      <p class="card-text"><strong>Supplier:</strong> <span th:text="${product.supplier.name}">Supplier Name</span></p>
+      <a th:href="@{/products/all}" class="btn btn-primary">Back to Products</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

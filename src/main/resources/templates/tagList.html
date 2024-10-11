@@ -2,39 +2,45 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Список тегов</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Список тегов</h1>
+<div th:insert="blocks/ClioHeader"></div>
+<div class="container mt-5">
+  <h1>Список тегов</h1>
 
-<!-- Форма для добавления нового тега -->
-<form action="/tags/add" method="post" th:object="${tag}">
-  <input type="text" name="name" placeholder="Название тега" th:field="*{name}" required>
-  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название не менее 3 символов</div>
-  <button type="submit" formmethod="post">Добавить тег</button>
-</form>
+  <!-- Форма для добавления нового тега -->
+  <form action="/tags/add" method="post" th:object="${tag}" sec:authorize="hasAuthority('SUPERVISOR')">
+    <div class="form-group">
+      <input type="text" class="form-control" name="name" placeholder="Название тега" th:field="*{name}" required>
+      <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">Название не менее 3 символов</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить тег</button>
+  </form>
 
-<h2>Все теги:</h2>
-<ul>
-  <th:block th:each="tag : ${tags}">
-    <li>
-      <span th:text="${tag.name}"></span>
+  <h2 class="mt-5">Все теги:</h2>
+  <ul class="list-group">
+    <th:block th:each="tag : ${tags}">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span th:text="${tag.name}"></span>
 
-      <!-- Форма для обновления тега -->
-      <form action="/tags/update" method="post" style="display:inline;">
-        <input type="hidden" name="id" th:value="${tag.id}">
-        <input type="text" name="name" th:value="${tag.name}" placeholder="Название" required>
-        <button type="submit" formmethod="post">Обновить</button>
-      </form>
+        <!-- Кнопка для редактирования тега -->
+        <a th:href="@{/tags/edit/{id}(id=${tag.id})}" class="btn btn-warning btn-sm" sec:authorize="hasAuthority('SUPERVISOR')">Редактировать</a>
 
-      <!-- Форма для удаления тега -->
-      <form action="/tags/delete" method="post" style="display:inline;">
-        <input type="hidden" name="id" th:value="${tag.id}">
-        <button type="submit" formmethod="post">Удалить</button>
-      </form>
-    </li>
-  </th:block>
-</ul>
+        <!-- Форма для удаления тега -->
+        <form action="/tags/delete" method="post" style="display:inline;" sec:authorize="hasAuthority('SUPERVISOR')">
+          <input type="hidden" name="id" th:value="${tag.id}">
+          <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+        </form>
+      </li>
+    </th:block>
+  </ul>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

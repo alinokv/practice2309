@@ -1,6 +1,9 @@
 package com.web_project.shop.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -8,7 +11,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-//@Table(name = "brands")
 public class BrandModel {
     @Id
     @GeneratedValue

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:action="@{/products/add}" th:object="${product}" method="post" class="mb-4">
+  <h2>Добавить продукт</h2>
+  <div class="form-group">
+    <label for="name">Имя</label>
+    <input type="text" id="name" th:field="*{name}" class="form-control" required>
+    <div th:if="${#fields.hasErrors('name')}" class="text-danger">
+      <p th:errors="*{name}"></p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="price">Цена</label>
+    <input type="number" id="price" th:field="*{price}" class="form-control" required>
+    <div th:if="${#fields.hasErrors('price')}" class="text-danger">
+      <p th:errors="*{price}"></p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="price">Описание</label>
+    <input type="text" id="description" th:field="*{description}" class="form-control" alt="" required>
+    <div th:if="${#fields.hasErrors('description')}" class="text-danger">
+      <p th:errors="*{description}"></p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="price">Изображение</label>
+    <input type="text" id="image" th:field="*{image}" class="form-control" alt="" required>
+    <div th:if="${#fields.hasErrors('image')}" class="text-danger">
+      <p th:errors="*{image}"></p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="quantity">Количество</label>
+    <input type="number" id="quantity" th:field="*{quantity}" class="form-control" required>
+    <div th:if="${#fields.hasErrors('quantity')}" class="text-danger">
+      <p th:errors="*{quantity}"></p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="dateOrder">Дата заказа</label>
+    <input type="date" id="dateOrder" th:field="*{dateOrder}" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="category">Категория</label>
+    <select id="category" th:field="*{category}" class="form-control">
+      <option th:each="category : ${categories}" th:value="${category}" th:text="${category.name}"></option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="brand">Бренд</label>
+    <select id="brand" th:field="*{brand}" class="form-control">
+      <option th:each="brand : ${brands}" th:value="${brand}" th:text="${brand.name}"></option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="supplier">Поставщик</label>
+    <select id="supplier" th:field="*{supplier}" class="form-control">
+      <option th:each="supplier : ${suppliers}" th:value="${supplier}" th:text="${supplier.name}"></option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="tags">Теги</label>
+    <select id="tags" th:field="*{tags}" multiple class="form-control">
+      <option th:each="tag : ${tags}" th:value="${tag}" th:text="${tag.name}"></option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Добавить продукт</button>
+</form>
+
+</body>
+</html>

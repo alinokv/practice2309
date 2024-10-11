@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список клиентов</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:insert="blocks/ClioHeader"></div>
+<div class="container mt-5">
+  <h1>Список клиентов</h1>
+
+  <!-- Форма для добавления нового клиента -->
+  <form action="/customers/add" method="post" th:object="${customer}" sec:authorize="hasAuthority('SUPERVISOR')">
+    <div class="form-group">
+      <input type="text" class="form-control" name="name" placeholder="Имя клиента" th:field="*{name}" required>
+      <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">Имя не менее 3 символов</div>
+    </div>
+    <div class="form-group">
+      <input type="email" class="form-control" name="email" placeholder="Email клиента" th:field="*{email}" required>
+      <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">Неверный формат Email</div>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" name="phone" placeholder="Телефон клиента" th:field="*{phone}">
+      <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger">Телефон не менее 8 символов</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить клиента</button>
+  </form>
+
+  <h2 class="mt-5">Все клиенты:</h2>
+  <ul class="list-group" sec:authorize="hasAuthority('SUPERVISOR')">
+    <th:block th:each="customer : ${customers}">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span th:text="${customer.name}"></span> - <span th:text="${customer.email}"></span>
+
+        <!-- Кнопка для редактирования клиента -->
+        <a th:href="@{/customers/edit/{id}(id=${customer.id})}" class="btn btn-warning btn-sm">Редактировать</a>
+
+        <!-- Форма для удаления клиента -->
+        <form action="/customers/delete" method="post" style="display:inline;">
+          <input type="hidden" name="id" th:value="${customer.id}">
+          <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+        </form>
+      </li>
+    </th:block>
+  </ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

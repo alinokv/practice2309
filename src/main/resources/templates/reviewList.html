@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список отзывов</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div th:insert="blocks/ClioHeader"></div>
+<div class="container">
+  <h1>Список отзывов</h1>
+
+  <!-- Форма для добавления нового отзыва -->
+  <form action="/reviews/add" method="post" th:object="${review}">
+    <div class="form-group">
+      <label for="customer">Клиент</label>
+      <select name="customer" th:field="*{customer}" class="form-control" required>
+        <th:block th:each="customer : ${customers}">
+          <option th:value="${customer.id}" th:text="${customer.name}"></option>
+        </th:block>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="product">Продукт</label>
+      <select name="product" th:field="*{product}" class="form-control" required>
+        <th:block th:each="product : ${products}">
+          <option th:value="${product.id}" th:text="${product.name}"></option>
+        </th:block>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="rating">Рейтинг</label>
+      <input type="number" name="rating" th:field="*{rating}" min="1" max="5" class="form-control" required>
+      <div th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="comment">Комментарий</label>
+      <textarea name="comment" th:field="*{comment}" class="form-control" required></textarea>
+      <div th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Добавить отзыв</button>
+  </form>
+
+  <h2>Все отзывы:</h2>
+  <ul class="list-group">
+    <th:block th:each="review : ${reviews}">
+      <li class="list-group-item">
+        <strong th:text="${review.product.name}"></strong> - <span th:text="${review.rating}"></span>
+        <p th:text="${review.comment}"></p>
+
+        <!-- Кнопка для редактирования отзыва -->
+        <a th:href="@{/reviews/{id}(id=${review.id})}" class="btn btn-warning" sec:authorize="hasAuthority('ADMIN')">Редактировать</a>
+
+        <!-- Форма для удаления отзыва -->
+        <form action="/reviews/delete" method="post" style="display:inline;" sec:authorize="hasAuthority('ADMIN')">
+          <input type="hidden" name="id" th:value="${review.id}">
+          <button type="submit" class="btn btn-danger">Удалить</button>
+        </form>
+      </li>
+    </th:block>
+  </ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

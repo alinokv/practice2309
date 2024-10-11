@@ -4,6 +4,7 @@ import com.web_project.shop.model.TagModel;
 import com.web_project.shop.service.TagServiceIMPL;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/tags")
+//@PreAuthorize("hasAnyAuthority('MODERATOR')")
 public class TagController {
 
     @Autowired
@@ -35,10 +37,17 @@ public class TagController {
         return "redirect:/tags/all";
     }
 
+    @GetMapping("/edit/{id}")
+    public String getTagForEdit(@PathVariable UUID id, Model model) {
+        TagModel tag = tagService.findById(id);
+        model.addAttribute("tag", tag);
+        return "editTag"; // Отображение страницы редактирования
+    }
+
     @PostMapping("/update")
     public String updateTag(@Valid @ModelAttribute("tag") TagModel tag, BindingResult result) {
         if (result.hasErrors()) {
-            return "tagList";
+            return "editTag"; // Если есть ошибки, возвращаемся на страницу редактирования
         }
         tagService.update(tag);
         return "redirect:/tags/all";
@@ -48,11 +57,5 @@ public class TagController {
     public String deleteTag(@RequestParam UUID id) {
         tagService.delete(id);
         return "redirect:/tags/all";
-    }
-
-    @GetMapping("/all/{id}")
-    public String getTagById(@PathVariable("id") UUID id, Model model) {
-        model.addAttribute("tag", tagService.findById(id));
-        return "tagList";
     }
 }

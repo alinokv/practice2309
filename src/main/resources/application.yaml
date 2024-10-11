@@ -1,8 +1,10 @@
 spring:
   config:
     name: shop
+  session:
+    timeout: 20m  # Время жизни сессии
   datasource:
-    url: jdbc:postgresql://localhost:5432/Myshopdb
+    url: jdbc:postgresql://localhost:5432/KoreanShop
     username: postgres
     password: 123
     driver-class-name: org.postgresql.Driver
@@ -15,5 +17,18 @@ spring:
     properties:
       hibernate:
         format_sql:
+  security:
+    session:
+      creation-policy: always
+
 server:
-  port: 7654
+  port: 8976
+#  error:
+#    whitelabel:
+#      enabled: false
+#    path: /error
+  servlet:
+    session:
+      timeout: 20m
+
+

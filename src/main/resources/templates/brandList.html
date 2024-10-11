@@ -1,45 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Список брендов</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand List</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<h1>Список брендов</h1>
+<body style="
+background: rgb(208,234,235);
+background: linear-gradient(145deg, rgba(208,234,235,1) 21%, rgba(0,212,255,1) 100%);
+">
+<div th:insert="blocks/ClioHeader"></div>
+<div class="container mt-5">
+  <h2>Бренды</h2>
 
-<!-- Форма для добавления нового бренда -->
-<form action="/brands/add" method="post" th:object="${brand}">
-  <input type="text" name="name" placeholder="Название бренда" th:field="*{name}" required>
-  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название не менее 3 символов</div>
+  <form th:action="@{/brands/add}" th:object="${brand}" method="post" class="mb-4" sec:authorize="hasAuthority('SUPERVISOR')">
+    <div class="form-group">
+      <label for="name">Имя:</label>
+      <input type="text" id="name" th:field="*{name}" class="form-control" required>
+      <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+    <div class="form-group">
+      <label for="description">Описание:</label>
+      <input type="text" id="description" th:field="*{description}" class="form-control" required>
+      <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить Бренд</button>
+  </form>
 
-  <input type="text" name="description" placeholder="Описание бренда" th:field="*{description}" required>
-  <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Описание не менее 3 символов</div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Имя</th>
+      <th>Описание</th>
+      <th sec:authorize="hasAuthority('SUPERVISOR')">Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="brand : ${brands}">
+      <td th:text="${brand.name}"></td>
+      <td th:text="${brand.description}"></td>
+      <td sec:authorize="hasAuthority('SUPERVISOR')">
+        <a th:href="@{/brands/edit/{id}(id=${brand.id})}" class="btn btn-warning" sec:authorize="hasAuthority('SUPERVISOR')">Редактировать</a>
+        <form th:action="@{/brands/delete}" method="post" style="display:inline;" sec:authorize="hasAuthority('SUPERVISOR')">
+          <input type="hidden" th:value="${brand.id}" name="id"/>
+          <button type="submit" class="btn btn-danger">Удалить</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
-  <button type="submit" formmethod="post">Добавить бренд</button>
-</form>
-
-<h2>Все бренды:</h2>
-<ul>
-  <th:block th:each="brand : ${brands}">
-    <li>
-      <span th:text="${brand.name} + ' - ' + ${brand.description}"></span>
-
-      <!-- Форма для обновления бренда -->
-      <form action="/brands/update" method="post" style="display:inline;">
-        <input type="hidden" name="id" th:value="${brand.id}">
-        <input type="text" name="name" th:value="${brand.name}" placeholder="Название" required>
-        <input type="text" name="description" th:value="${brand.description}" placeholder="Описание" required>
-        <button type="submit" formmethod="post">Обновить</button>
-      </form>
-
-      <!-- Форма для удаления бренда -->
-      <form action="/brands/delete" method="post" style="display:inline;">
-        <input type="hidden" name="id" th:value="${brand.id}">
-        <button type="submit" formmethod="post">Удалить</button>
-      </form>
-    </li>
-  </th:block>
-</ul>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

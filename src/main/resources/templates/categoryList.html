@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Список категорий</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список категорий</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Список категорий</h1>
-<form action="/categories/add" method="post" th:object="${category}">
-  <input type="text" name="name" placeholder="Название категории" th:field="*{name}" required>
-  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название не должно быть меньше чем 3 символа</div>
-  <input type="text" name="description" placeholder="Описание категории" th:field="*{description}" required>
-  <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Описание не должно быть меньше чем 3 символа</div>
-  <button type="submit" formmethod="post">Добавить категорию</button>
-</form>
+<div th:insert="blocks/ClioHeader"></div>
+<div class="container mt-5">
+    <h1>Список категорий</h1>
+    <form action="/categories/add" method="post" th:object="${category}" sec:authorize="hasAuthority('SUPERVISOR')">
+        <div class="form-group">
+            <input type="text" class="form-control" name="name" placeholder="Название категории" th:field="*{name}" required>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">Название не должно быть меньше чем 3 символа</div>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="description" placeholder="Описание категории" th:field="*{description}" required>
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">Описание не должно быть меньше чем 3 символа</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить категорию</button>
+    </form>
 
-<h2>Все категории: </h2>
-<ul>
-  <th:block th:each="category : ${categories}">
-    <li>
-      <span th:text="${category.name} + ' - ' + ${category.description}"></span>
-      <form action="/categories/update" method="post" style="display:inline;">
-        <input type="hidden" name="id" th:value="${category.id}">
-        <input type="text" name="name" th:value="${category.name}" placeholder="Название" required>
-        <input type="text" name="description" th:value="${category.description}" placeholder="Описание" required>
-        <button type="submit" formmethod="post">Обновить</button>
-      </form>
-      <form action="/categories/delete" method="post" style="display:inline;">
-        <input type="hidden" name="id" th:value="${category.id}">
-        <button type="submit" formmethod="post">Удалить</button>
-      </form>
-    </li>
-  </th:block>
-</ul>
+    <h2 class="mt-5">Все категории: </h2>
+    <ul class="list-group">
+        <th:block th:each="category : ${categories}">
+            <li class="list-group-item" sec:authorize="hasAuthority('SUPERVISOR')">
+                <span th:text="${category.name} + ' - ' + ${category.description}"></span>
+                <a th:href="@{/categories/edit/{id}(id=${category.id})}" class="btn btn-warning btn-sm">Редактировать</a>
+                <form action="/categories/delete" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${category.id}">
+                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                </form>
+            </li>
+        </th:block>
+    </ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

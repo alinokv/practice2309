@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактирование заказа</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>Редактирование заказа</h1>
+
+  <!-- Форма для редактирования заказа -->
+  <form action="/orders/update" method="post" th:object="${order}" class="mb-4">
+    <input type="hidden" th:field="*{id}"/>
+
+    <div class="form-group">
+      <label for="customer">Клиент:</label>
+      <select id="customer" name="customer" th:field="*{customer.id}" class="form-control" required>
+        <th:block th:each="customer : ${customers}">
+          <option th:value="${customer.id}" th:text="${customer.name}"
+                  th:if="${customer.id == order.customer.id}"></option>
+        </th:block>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="products">Товары:</label>
+      <select multiple id="products" name="products" th:field="*{products}" class="form-control">
+        <th:block th:each="product : ${products}">
+          <option th:value="${product.id}" th:text="${product.name}"
+                  th:if="${#lists.contains(order.products, product)}"></option>
+        </th:block>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="orderDate">Дата заказа:</label>
+      <input type="date" id="orderDate" name="orderDate" th:field="*{orderDate}" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+  </form>
+
+  <a href="/orders/all" class="btn btn-secondary">Назад</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

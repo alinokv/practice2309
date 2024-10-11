@@ -9,11 +9,10 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-//@Table(name = "products")
 public class ProductModel {
     @Id
     @GeneratedValue
-    private UUID Id;
+    private UUID id;
 
     @Size(min = 3, message = "Имя не менее 3 символов")
     @NotNull
@@ -23,6 +22,11 @@ public class ProductModel {
     @Positive
     private Double price;
 
+    @NotNull
+    private String description;
+
+    private String image;
+
     @Min(1)
     @Max(100)
     @NotNull
@@ -30,19 +34,24 @@ public class ProductModel {
 
     @PastOrPresent
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dateorder;
+    private Date dateOrder;
 
-    // Связь ManyToOne с Category
+    // Связь ManyToOne с CategoryModel
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryModel category;
 
-    // Связь ManyToOne с Brand
+    // Связь ManyToOne с BrandModel
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private BrandModel brand;
 
-    // Связь ManyToMany с Tag
+    // Связь ManyToOne с SupplierModel
+    @ManyToOne
+    @JoinColumn(name = "supplier_id")
+    private SupplierModel supplier;
+
+    // Связь ManyToMany с TagModel
     @ManyToMany
     @JoinTable(
             name = "product_tags",
@@ -51,26 +60,29 @@ public class ProductModel {
     )
     private Set<TagModel> tags;
 
-
+    // Конструкторы, геттеры и сеттеры
     public ProductModel() { }
 
-    public ProductModel(UUID id, String name, Double price, int quantity, Date dateorder, CategoryModel category, BrandModel brand, Set<TagModel> tags) {
-        Id = id;
+    public ProductModel(UUID id, String name, Double price, String description, String image, int quantity, Date dateOrder, CategoryModel category, BrandModel brand, SupplierModel supplier, Set<TagModel> tags) {
+        this.id = id;
         this.name = name;
         this.price = price;
+        this.description = description;
+        this.image = image;
         this.quantity = quantity;
-        this.dateorder = dateorder;
+        this.dateOrder = dateOrder;
         this.category = category;
         this.brand = brand;
+        this.supplier = supplier;
         this.tags = tags;
     }
 
     public UUID getId() {
-        return Id;
+        return id;
     }
 
     public void setId(UUID id) {
-        Id = id;
+        this.id = id;
     }
 
     public @Size(min = 3, message = "Имя не менее 3 символов") @NotNull String getName() {
@@ -89,6 +101,22 @@ public class ProductModel {
         this.price = price;
     }
 
+    public @NotNull String getDescription() {
+        return description;
+    }
+
+    public void setDescription(@NotNull String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Min(1)
     @Max(100)
     @NotNull
@@ -100,12 +128,12 @@ public class ProductModel {
         this.quantity = quantity;
     }
 
-    public @PastOrPresent Date getDateorder() {
-        return dateorder;
+    public @PastOrPresent Date getDateOrder() {
+        return dateOrder;
     }
 
-    public void setDateorder(@PastOrPresent Date dateorder) {
-        this.dateorder = dateorder;
+    public void setDateOrder(@PastOrPresent Date dateOrder) {
+        this.dateOrder = dateOrder;
     }
 
     public CategoryModel getCategory() {
@@ -122,6 +150,14 @@ public class ProductModel {
 
     public void setBrand(BrandModel brand) {
         this.brand = brand;
+    }
+
+    public SupplierModel getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(SupplierModel supplier) {
+        this.supplier = supplier;
     }
 
     public Set<TagModel> getTags() {

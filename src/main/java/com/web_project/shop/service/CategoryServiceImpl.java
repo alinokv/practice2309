@@ -53,7 +53,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class CategoryServiceImpl extends GenericServiceImpl<CategoryModel, UUID> {
+public class CategoryServiceImpl extends GenericServiceImpl<CategoryModel, UUID> implements CategoryService {
     public CategoryServiceImpl(Category_Repository repository) {
         super(repository);
     }

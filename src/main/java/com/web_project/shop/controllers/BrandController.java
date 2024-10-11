@@ -4,6 +4,7 @@ import com.web_project.shop.model.BrandModel;
 import com.web_project.shop.service.BrandServiceIMPL;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/brands")
+//@PreAuthorize("hasAnyAuthority('SUPERVISOR')")
 public class BrandController {
 
     @Autowired
@@ -22,7 +24,7 @@ public class BrandController {
     public String getAllBrands(Model model) {
         model.addAttribute("brands", brandService.findAll());
         model.addAttribute("brand", new BrandModel());
-        return "brandList";
+        return "brandList"; // Название шаблона, который будет отрендерен
     }
 
     @PostMapping("/add")
@@ -38,7 +40,7 @@ public class BrandController {
     @PostMapping("/update")
     public String updateBrand(@Valid @ModelAttribute("brand") BrandModel brand, BindingResult result) {
         if (result.hasErrors()) {
-            return "brandList";
+            return "brandList"; // Можно добавить в модель информацию о бренде
         }
         brandService.update(brand);
         return "redirect:/brands/all";
@@ -50,9 +52,10 @@ public class BrandController {
         return "redirect:/brands/all";
     }
 
-    @GetMapping("/all/{id}")
-    public String getBrandById(@PathVariable("id") UUID id, Model model) {
+    @GetMapping("/edit/{id}")
+    public String editBrand(@PathVariable("id") UUID id, Model model) {
         model.addAttribute("brand", brandService.findById(id));
-        return "brandList";
+        model.addAttribute("brands", brandService.findAll());
+        return "brandList"; // Перейдем к тому же шаблону, чтобы отобразить форму редактирования
     }
 }

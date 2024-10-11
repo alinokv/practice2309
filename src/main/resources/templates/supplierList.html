@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список поставщиков</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:insert="blocks/ClioHeader"></div>
+<div class="container mt-5">
+  <h1>Список поставщиков</h1>
+
+<!--  th:authorize="hasAuthority('ADMIN')"-->
+  <!-- Форма для добавления нового поставщика -->
+
+<!--  <a sec:authorize="hasAuthority('ADMIN')"-->
+<!--     th:href="'/admin/' + ${user_object.idUser} + '/update'"-->
+<!--     class="btn btn-success">Редактировать</a>-->
+<div sec:authorize="hasAuthority('SUPERVISOR')">
+  <form action="/suppliers/add" method="post" th:object="${supplier}" >
+    <div class="form-group">
+      <input type="text" class="form-control" name="name" placeholder="Имя поставщика" th:field="*{name}" required>
+      <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">Имя не менее 3 символов</div>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" name="contactInfo" placeholder="Контактная информация" th:field="*{contactInfo}" required>
+      <div th:if="${#fields.hasErrors('contactInfo')}" th:errors="*{contactInfo}" class="text-danger">Контактная информация не менее 10 символов</div>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" name="address" placeholder="Адрес" th:field="*{address}" required>
+      <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger">Адрес не менее 5 символов</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить поставщика</button>
+  </form>
+
+</div>
+
+  <h2 class="mt-5">Все поставщики:</h2>
+  <ul class="list-group">
+    <th:block th:each="supplier : ${suppliers}">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span th:text="${supplier.name}"></span> - <span th:text="${supplier.contactInfo}"></span>
+
+        <!-- Кнопка для редактирования поставщика -->
+        <a th:href="@{/suppliers/edit/{id}(id=${supplier.id})}" class="btn btn-warning btn-sm" sec:authorize="hasAuthority('SUPERVISOR')">Редактировать</a>
+
+        <!-- Форма для удаления поставщика -->
+        <form action="/suppliers/delete" method="post" style="display:inline;" sec:authorize="hasAuthority('SUPERVISOR')">
+          <input type="hidden" name="id" th:value="${supplier.id}">
+          <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+        </form>
+      </li>
+    </th:block>
+  </ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
