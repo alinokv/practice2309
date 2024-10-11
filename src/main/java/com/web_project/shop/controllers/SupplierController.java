@@ -15,7 +15,6 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/suppliers")
-//@PreAuthorize("hasAnyAuthority('MODERATOR')")
 public class SupplierController {
 
     @Autowired
